@@ -1,0 +1,115 @@
+.pageContainer {
+  padding: 40px;
+  background-color: #f8fafc; /* Nền xám nhạt toàn trang */
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* --- Header Section --- */
+.headerWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.title {
+  color: #1e40af; /* Màu xanh đậm của tiêu đề */
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.createButton {
+  background-color: #0f172a; /* Màu nền nút tối (gần như đen) */
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.createButton:hover {
+  background-color: #334155;
+  transform: translateY(-1px);
+}
+
+/* --- Table Grid Layout --- */
+/* Định nghĩa độ rộng các cột: 
+   Cột 1: 2 phần, Cột 2: 3 phần, Cột 3: 1 phần, Cột 4: 1.5 phần */
+.gridLayout {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr 1.5fr; 
+  gap: 20px;
+  align-items: center;
+  padding: 0 20px;
+}
+
+/* --- Table Header --- */
+.tableHeader {
+  margin-bottom: 15px;
+}
+
+.headerTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8; /* Màu chữ xám nhạt của header */
+  text-transform: uppercase;
+}
+
+/* --- Table Row (Data) --- */
+.dataRow {
+  background-color: #ffffff;
+  padding: 20px; /* Padding để tạo độ dày cho hàng */
+  border-radius: 16px; /* Bo góc mượt giống ảnh */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 10px;
+}
+
+.dataRow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Styles cho từng loại dữ liệu trong dòng */
+.cellId {
+  font-weight: 700;
+  color: #475569;
+  font-size: 14px;
+}
+
+.cellName {
+  font-weight: 800;
+  color: #2563eb; /* Màu xanh dương cho tên */
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.cellYear {
+  font-weight: 600;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.cellAction {
+  font-size: 13px;
+  color: #94a3b8;
+  font-style: italic;
+  cursor: pointer;
+  text-align: right; /* Căn phải cho nút Xem chi tiết */
+  transition: color 0.2s;
+}
+
+.cellAction:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}

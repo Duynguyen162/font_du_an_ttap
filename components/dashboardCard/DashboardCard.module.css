@@ -1,0 +1,36 @@
+.card {
+  background: white;
+  border-radius: 24px; /* Bo góc lớn */
+  padding: 25px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 160px; /* Đảm bảo chiều cao đồng đều */
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  letter-spacing: 0.5px;
+}
+
+.value {
+  font-size: 48px; /* Số to đùng */
+  font-weight: 900;
+  color: #1e293b;
+  font-style: italic; /* Chữ nghiêng nhẹ giống ảnh */
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* Căn giữa cho card biểu đồ */
+.center {
+  align-items: center;
+}
+
+.left {
+  align-items: flex-start;
+}

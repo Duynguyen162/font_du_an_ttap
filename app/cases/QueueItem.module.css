@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 15px 20px;
+  border-radius: 30px; /* Bo góc cực đại giống ảnh */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03); /* Đổ bóng nhẹ */
+  width: 100%;
+  gap: 15px;
+  transition: transform 0.2s ease;
+}
+
+.container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.iconWrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e2e8f0; /* Màu nền xám cho icon */
+  border-radius: 8px;
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Chiếm phần không gian còn lại */
+}
+
+.fileName {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.fileDate {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
+}

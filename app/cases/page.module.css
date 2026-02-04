@@ -1,0 +1,21 @@
+.pageContainer {
+  padding: 40px;
+  background-color: #f8fafc; /* Nền trang sáng nhẹ */
+  min-height: 100vh;
+}
+
+.title {
+  color: #2563eb; /* Màu xanh dương đậm */
+  font-size: 24px;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+}
+
+.listWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Khoảng cách giữa các hàng đợi */
+  max-width: 800px; /* Giới hạn chiều rộng cho đẹp */
+}

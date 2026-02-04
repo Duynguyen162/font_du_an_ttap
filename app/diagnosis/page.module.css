@@ -1,0 +1,60 @@
+.pageContainer {
+  padding: 40px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 2.2fr 1fr; /* Chia cột: Trái to (2.2 phần), Phải nhỏ (1 phần) */
+  gap: 30px;
+  align-items: start; /* Căn lên trên cùng */
+}
+
+/* --- Style cho thẻ Dự đoán (Màu hồng) --- */
+.scoreCard {
+  background-color: #ff0055; /* Màu hồng đậm giống ảnh */
+  background: linear-gradient(135deg, #ff2e63 0%, #ff0055 100%); /* Gradient cho đẹp */
+  border-radius: 24px;
+  padding: 30px;
+  color: white;
+  margin-bottom: 30px; /* Khoảng cách với thẻ dưới */
+  box-shadow: 0 10px 25px rgba(255, 0, 85, 0.3); /* Bóng màu hồng */
+}
+
+.scoreTitle {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  opacity: 0.9;
+}
+
+.scoreValue {
+  font-size: 64px; /* Số cực to */
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+}
+
+/* --- Style nội dung cho Audit Trail --- */
+.auditRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 13px;
+}
+
+.auditLabel {
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.auditValue {
+  color: #3b82f6; /* Màu xanh dương cho tên */
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.auditValueId {
+  color: #64748b; /* Màu xám cho ID */
+  font-weight: 600;
+}
