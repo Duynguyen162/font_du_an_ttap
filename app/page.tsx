@@ -1,5 +1,5 @@
 import Link from "next/link";
-import DashboardPage from "./cases/page";
+import DashboardPage from "./main/cases/page";
 
 export default function Home() {
   return (

@@ -1,0 +1,46 @@
+/* Container bao quanh toàn bộ màn hình */
+.dashboardContainer {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc; /* Màu nền xám nhạt chuẩn dashboard */
+  position: relative;
+}
+
+/* Khu vực hiển thị Sidebar
+  Lưu ý: Component Sidebar của bạn đã có "position: fixed" và "width: 260px"
+  trong file Sidebar.module.css cũ, nên ở đây ta chỉ cần giữ chỗ.
+*/
+.sidebar {
+  width: 260px;
+  flex-shrink: 0; /* Đảm bảo sidebar không bao giờ bị co nhỏ lại */
+  z-index: 50; /* Đảm bảo sidebar luôn nổi lên trên cùng */
+}
+
+/* Khu vực nội dung chính (Nơi hiển thị các page)
+*/
+.contentArea {
+  flex: 1; /* Chiếm toàn bộ phần không gian còn lại */
+
+  /* Một số style cơ bản cho khung nội dung */
+  min-height: 100vh;
+  width: calc(100% - 260px); /* Đảm bảo chiều rộng chính xác */
+  background-color: #f8fafc;
+
+  /* Nếu bạn muốn hiệu ứng mượt khi Sidebar đóng/mở sau này */
+  transition:
+    margin-left 0.3s ease,
+    width 0.3s ease;
+}
+
+/* Responsive: Trên màn hình điện thoại thì bỏ margin (Sidebar sẽ ẩn đi hoặc thành menu burger) */
+@media (max-width: 768px) {
+  .contentArea {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .sidebar {
+    display: none; /* Hoặc xử lý ẩn hiện bằng JS sau này */
+  }
+}

@@ -1,8 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import styles from "./Auth.module.css";
+
+/* ================== TYPES ================== */
 
 type AuthMode = "login" | "register" | "restore";
 
@@ -10,7 +13,6 @@ interface AuthFormProps {
   mode: AuthMode;
 }
 
-/* ================== CONTENT TYPES ================== */
 type BaseContent = {
   leftTitle: string;
   leftSubtitle: string;
@@ -28,7 +30,6 @@ type ContentConfig = {
   restore: RestoreContent;
 };
 
-/* ================== CONTENT CONFIG ================== */
 const CONTENT_CONFIG: ContentConfig = {
   login: {
     leftTitle: "Truy Cập Hệ Thống",
@@ -50,19 +51,87 @@ const CONTENT_CONFIG: ContentConfig = {
 };
 
 /* ================== COMPONENT ================== */
+
 export default function AuthComponent({ mode }: AuthFormProps) {
+  const router = useRouter();
   const content = CONTENT_CONFIG[mode];
   const isRestore = mode === "restore";
 
-  // Tách title thành 2 dòng tự động
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   const titleWords = content.leftTitle.split(" ");
   const firstLine = titleWords.slice(0, 2).join(" ");
   const secondLine = titleWords.slice(2).join(" ");
 
+  /* ================== SUBMIT ================== */
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setIsLoading(true);
+    setErrorMsg("");
+
+    const formData = new FormData(event.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      let response: Response;
+
+      if (mode === "login") {
+        response = await fetch("http://localhost:8080/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: data.msnv,
+            password: data.password,
+          }),
+        });
+      } else if (mode === "register") {
+        response = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+      } else {
+        response = await fetch("/api/auth/restore", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ msnv: data.msnv }),
+        });
+      }
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Xảy ra lỗi");
+      }
+
+      // LOGIN SUCCESS
+      if (mode === "login") {
+        // nếu backend trả token:
+        localStorage.setItem("accessToken", result.token);
+
+        // Lưu token vào cookie (để middleware đọc được)
+        document.cookie = `accessToken=${result.token}; path=/;`;
+        console.log("Đăng nhập thành công, token:", result.token);
+        router.push("/main/dashboard");
+      } else {
+        alert(result.message || "Thành công!");
+      }
+    } catch (error: any) {
+      setErrorMsg(error.message || "Không thể kết nối server");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  /* ================== JSX ================== */
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
-        {/* === LEFT PANEL === */}
+        {/* LEFT */}
         <div className={styles.leftPanel}>
           <div className={styles.brand}>
             <div className={styles.brandLogo}>⚡</div>
@@ -71,18 +140,18 @@ export default function AuthComponent({ mode }: AuthFormProps) {
 
           <div className={styles.heroText}>
             <h1>
-              {firstLine} <br />
+              {firstLine}
+              <br />
               {secondLine}
             </h1>
             <p>{content.leftSubtitle}</p>
           </div>
 
           <div className={styles.footerText}>© 2026 ĐH THỦY LỢI</div>
-
           <div className={styles.glowCircle}></div>
         </div>
 
-        {/* === RIGHT PANEL === */}
+        {/* RIGHT */}
         <div className={styles.rightPanel}>
           {!isRestore ? (
             <div className={styles.tabs}>
@@ -94,6 +163,7 @@ export default function AuthComponent({ mode }: AuthFormProps) {
               >
                 Đăng nhập
               </Link>
+
               <Link
                 href="/auth/register"
                 className={`${styles.tabItem} ${
@@ -105,54 +175,67 @@ export default function AuthComponent({ mode }: AuthFormProps) {
             </div>
           ) : (
             <div className={styles.formHeader}>
-              {isRestore &&
-                "rightHeader" in content &&
-                "rightSubHeader" in content && (
-                  <>
-                    <h2>{content.rightHeader}</h2>
-                    <p>{content.rightSubHeader}</p>
-                  </>
-                )}
+              {"rightHeader" in content && (
+                <>
+                  <h2>{content.rightHeader}</h2>
+                  <p>{content.rightSubHeader}</p>
+                </>
+              )}
             </div>
           )}
 
-          <form>
-            {/* REGISTER: 2 input hàng đầu */}
-            {mode === "register" && (
-              <div className={`${styles.inputGroup} ${styles.row}`}>
-                <input className={styles.input} placeholder="MSNV..." />
-                <input className={styles.input} placeholder="Số hiệu CCHN..." />
-              </div>
+          <form onSubmit={handleSubmit}>
+            {errorMsg && (
+              <div style={{ color: "red", fontSize: 12 }}>{errorMsg}</div>
             )}
 
-            {/* LOGIN & RESTORE: MSNV */}
-            {(mode === "login" || mode === "restore") && (
-              <div className={styles.inputGroup}>
+            {mode === "register" && (
+              <div className={`${styles.inputGroup} ${styles.row}`}>
                 <input
+                  name="msnv"
                   className={styles.input}
-                  placeholder={
-                    mode === "restore"
-                      ? "Nhập MSNV: 2251172379..."
-                      : "MSNV: 2251172379..."
-                  }
+                  placeholder="MSNV..."
+                  required
+                />
+                <input
+                  name="cchn"
+                  className={styles.input}
+                  placeholder="CCHN..."
+                  required
                 />
               </div>
             )}
 
-            {/* REGISTER: Họ tên */}
-            {mode === "register" && (
+            {(mode === "login" || mode === "restore") && (
               <div className={styles.inputGroup}>
-                <input className={styles.input} placeholder="Họ và tên..." />
+                <input
+                  name="msnv"
+                  className={styles.input}
+                  placeholder="MSNV..."
+                  required
+                />
               </div>
             )}
 
-            {/* PASSWORD (không có ở restore) */}
+            {mode === "register" && (
+              <div className={styles.inputGroup}>
+                <input
+                  name="fullName"
+                  className={styles.input}
+                  placeholder="Họ tên..."
+                  required
+                />
+              </div>
+            )}
+
             {!isRestore && (
               <div className={styles.inputGroup}>
                 <input
-                  className={styles.input}
+                  name="password"
                   type="password"
+                  className={styles.input}
                   placeholder="Mật khẩu..."
+                  required
                 />
 
                 {mode === "login" && (
@@ -163,13 +246,17 @@ export default function AuthComponent({ mode }: AuthFormProps) {
               </div>
             )}
 
-            <button type="button" className={styles.btnSubmit}>
-              {content.btnText}
+            <button
+              type="submit"
+              className={styles.btnSubmit}
+              disabled={isLoading}
+            >
+              {isLoading ? "Đang xử lý..." : content.btnText}
             </button>
 
             {isRestore && (
               <Link href="/auth/login" className={styles.backLink}>
-                ← QUAY LẠI ĐĂNG NHẬP
+                ← Quay lại đăng nhập
               </Link>
             )}
           </form>
