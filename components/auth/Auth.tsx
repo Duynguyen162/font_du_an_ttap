@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import styles from "./Auth.module.css";
+import styles from "./auth.module.css";
 
 /* ================== TYPES ================== */
 
