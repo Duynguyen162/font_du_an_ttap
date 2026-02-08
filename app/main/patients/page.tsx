@@ -1,36 +1,65 @@
-import React from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 
-// 1. Định nghĩa kiểu dữ liệu cho Bệnh nhân
 interface PatientRecord {
-  id: string;
+  id: number;
+  code: string;
   name: string;
-  birthYear: number;
+  dateOfBirth: string;
+  gender: string;
+  note: string;
+  createdAt: string;
 }
 
-// 2. Dữ liệu mẫu (Giả lập)
-const mockPatients: PatientRecord[] = [
-  {
-    id: "BN-2251172379",
-    name: "NGUYỄN VĂN A",
-    birthYear: 1980,
-  },
-  {
-    id: "BN-2251172380",
-    name: "TRẦN THỊ B",
-    birthYear: 1992,
-  },
-  {
-    id: "BN-2251172381",
-    name: "LÊ VĂN C",
-    birthYear: 1975,
-  },
-];
-
 export default function PatientsPage() {
+  const [patients, setPatients] = useState<PatientRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Lấy token từ cookie nếu cần xác thực
+        const getCookie = (name: string) => {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop()?.split(";").shift();
+          return "";
+        };
+        const token = getCookie("accessToken");
+
+        const res = await fetch("http://localhost:8080/api/patients", {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
+        if (res.status === 401) {
+          document.cookie =
+            "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+          window.location.href = "/auth/login";
+          return;
+        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const data: PatientRecord[] = await res.json();
+        setPatients(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatients();
+  }, []);
+
   return (
     <div className={styles.pageContainer}>
-      {/* --- Phần Header & Nút Tạo --- */}
       <div className={styles.headerWrapper}>
         <h1 className={styles.title}>HỒ SƠ BỆNH NHÂN</h1>
         <button className={styles.createButton}>
@@ -38,10 +67,7 @@ export default function PatientsPage() {
         </button>
       </div>
 
-      {/* --- Phần Bảng dữ liệu --- */}
       <div className={styles.tableContainer}>
-        {/* Dòng Tiêu đề (Header) */}
-        {/* Sử dụng class gridLayout để căn cột khớp với dòng dữ liệu */}
         <div className={`${styles.gridLayout} ${styles.tableHeader}`}>
           <div className={styles.headerTitle}>MÃ ĐỊNH DANH</div>
           <div className={styles.headerTitle}>HỌ VÀ TÊN</div>
@@ -51,19 +77,28 @@ export default function PatientsPage() {
           </div>
         </div>
 
-        {/* Danh sách Bệnh nhân */}
         <div className={styles.listWrapper}>
-          {mockPatients.map((patient) => (
-            <div
-              key={patient.id}
-              className={`${styles.gridLayout} ${styles.dataRow}`}
-            >
-              <div className={styles.cellId}>{patient.id}</div>
-              <div className={styles.cellName}>{patient.name}</div>
-              <div className={styles.cellYear}>{patient.birthYear}</div>
-              <div className={styles.cellAction}>Xem chi tiết &rarr;</div>
-            </div>
-          ))}
+          {loading ? (
+            <div>Đang tải...</div>
+          ) : error ? (
+            <div style={{ color: "red" }}>Lỗi: {error}</div>
+          ) : patients.length === 0 ? (
+            <div>Không có dữ liệu</div>
+          ) : (
+            patients.map((patient) => (
+              <div
+                key={patient.id}
+                className={`${styles.gridLayout} ${styles.dataRow}`}
+              >
+                <div className={styles.cellId}>{patient.code}</div>
+                <div className={styles.cellName}>{patient.name}</div>
+                <div className={styles.cellYear}>
+                  {patient.dateOfBirth?.split("-")[0] ?? ""}
+                </div>
+                <div className={styles.cellAction}>Xem chi tiết &rarr;</div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

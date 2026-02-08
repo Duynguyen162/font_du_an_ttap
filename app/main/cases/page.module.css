@@ -1,11 +1,11 @@
 .pageContainer {
   padding: 40px;
-  background-color: #f8fafc; /* Nền trang sáng nhẹ */
+  background-color: #f8fafc;
   min-height: 100vh;
 }
 
 .title {
-  color: #2563eb; /* Màu xanh dương đậm */
+  color: #2563eb;
   font-size: 24px;
   font-weight: 900;
   text-transform: uppercase;
@@ -16,6 +16,20 @@
 .listWrapper {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Khoảng cách giữa các hàng đợi */
-  max-width: 800px; /* Giới hạn chiều rộng cho đẹp */
+  gap: 15px;
+  max-width: 800px;
+}
+
+.stateText {
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 0;
+}
+
+.stateTextError {
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 0;
 }

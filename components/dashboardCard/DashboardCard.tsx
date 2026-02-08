@@ -12,7 +12,7 @@ interface DashboardCardProps {
 const DashboardCard: React.FC<DashboardCardProps> = ({
   title,
   value,
-  titleColor = "#3b82f6", // Mặc định xanh dương
+  titleColor = "#3b82f6", 
   children,
   align = "left",
 }) => {

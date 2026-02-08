@@ -114,7 +114,7 @@ export default function AuthComponent({ mode }: AuthFormProps) {
 
         // Lưu token vào cookie (để middleware đọc được)
         document.cookie = `accessToken=${result.token}; path=/;`;
-        console.log("Đăng nhập thành công, token:", result.token);
+
         router.push("/main/dashboard");
       } else {
         alert(result.message || "Thành công!");

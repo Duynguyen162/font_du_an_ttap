@@ -28,7 +28,7 @@ export function middleware(request: NextRequest) {
   // mà lại cố tình vào trang Login/Register
   if (token && isPublicPath) {
     // Đá về Dashboard (hoặc trang chính của bạn)
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/main/dashboard", request.url));
   }
 
   // Nếu hợp lệ thì cho đi tiếp

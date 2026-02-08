@@ -35,7 +35,7 @@
   border: none;
   font-size: 12px;
   font-weight: 700;
-  color: #3b82f6; /* Màu xanh dương */
+  color: #3b82f6;
   cursor: pointer;
   transition: opacity 0.2s;
 }
@@ -46,17 +46,23 @@
 
 .imageArea {
   flex: 1;
-  background-color: #f8fafc; /* Nền xám nhạt chỗ đặt ảnh */
+  background-color: #f8fafc;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
-  min-height: 400px; /* Chiều cao tối thiểu */
+  min-height: 400px;
 }
 
-/* Style giả lập icon ảnh ở giữa khi chưa có ảnh thật */
+/* BẮT BUỘC cho next/image khi dùng fill */
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .placeholderIcon {
   width: 80px;
   height: 80px;
