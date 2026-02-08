@@ -33,7 +33,7 @@ export default function PatientsPage() {
         };
         const token = getCookie("accessToken");
 
-        const res = await fetch("http://localhost:8080/api/patients", {
+        const res = await fetch("https://98e0-123-24-222-78.ngrok-free.app/api/patients", {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
           },

@@ -79,14 +79,17 @@ export default function AuthComponent({ mode }: AuthFormProps) {
       let response: Response;
 
       if (mode === "login") {
-        response = await fetch("http://localhost:8080/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: data.msnv,
-            password: data.password,
-          }),
-        });
+        response = await fetch(
+          "https://98e0-123-24-222-78.ngrok-free.app/api/auth/login",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              username: data.msnv,
+              password: data.password,
+            }),
+          },
+        );
       } else if (mode === "register") {
         response = await fetch("/api/auth/register", {
           method: "POST",
