@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import styles from "./auth.module.css";
+import styles from "./Auth.module.css";
 
 /* ================== TYPES ================== */
 
@@ -34,7 +34,7 @@ const CONTENT_CONFIG: ContentConfig = {
   login: {
     leftTitle: "Truy Cập Hệ Thống",
     leftSubtitle: "BS: THANH HUYỀN",
-    btnText: "Vào hệ thống quản trị",
+    btnText: "Đăng nhập",
   },
   register: {
     leftTitle: "Đăng Ký Danh Tính",
@@ -79,17 +79,14 @@ export default function AuthComponent({ mode }: AuthFormProps) {
       let response: Response;
 
       if (mode === "login") {
-        response = await fetch(
-          "https://98e0-123-24-222-78.ngrok-free.app/api/auth/login",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              username: data.msnv,
-              password: data.password,
-            }),
-          },
-        );
+        response = await fetch("http://localhost:8080/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: data.msnv,
+            password: data.password,
+          }),
+        });
       } else if (mode === "register") {
         response = await fetch("/api/auth/register", {
           method: "POST",

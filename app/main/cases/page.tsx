@@ -45,15 +45,12 @@ export default function QueuePage() {
         };
         const token = getCookie("accessToken");
 
-        const res = await fetch(
-          "https://98e0-123-24-222-78.ngrok-free.app/api/cases",
-          {
-            cache: "no-store",
-            headers: {
-              Authorization: token ? `Bearer ${token}` : "",
-            },
+        const res = await fetch("http://localhost:8080/api/cases", {
+          cache: "no-store",
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
           },
-        );
+        });
         if (res.status === 401) {
           document.cookie =
             "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
